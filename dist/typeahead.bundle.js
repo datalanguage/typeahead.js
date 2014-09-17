@@ -1,5 +1,5 @@
 /*!
- * typeahead.js 0.10.5
+ * typeahead.js 0.10.6
  * https://github.com/twitter/typeahead.js
  * Copyright 2013-2014 Twitter, Inc. and other contributors; Licensed MIT
  */
@@ -126,7 +126,7 @@
             noop: function() {}
         };
     }();
-    var VERSION = "0.10.5";
+    var VERSION = "0.10.6";
     var tokenizers = function() {
         "use strict";
         return {
@@ -1215,6 +1215,7 @@
                         $el.children().each(function() {
                             $(this).css(css.suggestionChild);
                         });
+                        this.trigger("suggestionRendered", $el, suggestion);
                         return $el;
                     }
                 }
@@ -1301,6 +1302,7 @@
             _.each(this.datasets, function(dataset) {
                 that.$menu.append(dataset.getRoot());
                 dataset.onSync("rendered", that._onRendered, that);
+                dataset.onSync("suggestionRendered", that._onSuggestionRendered, that);
             });
         }
         _.mixin(Dropdown.prototype, EventEmitter, {
@@ -1321,6 +1323,9 @@
                 function isDatasetEmpty(dataset) {
                     return dataset.isEmpty();
                 }
+            },
+            _onSuggestionRendered: function onRendered(type, $el, suggestion) {
+                this.trigger("datasetItemRendered", $el, suggestion);
             },
             _hide: function() {
                 this.$menu.hide();
@@ -1481,7 +1486,7 @@
             this.dropdown = new Dropdown({
                 menu: $menu,
                 datasets: o.datasets
-            }).onSync("suggestionClicked", this._onSuggestionClicked, this).onSync("cursorMoved", this._onCursorMoved, this).onSync("cursorRemoved", this._onCursorRemoved, this).onSync("opened", this._onOpened, this).onSync("closed", this._onClosed, this).onAsync("datasetRendered", this._onDatasetRendered, this);
+            }).onSync("suggestionClicked", this._onSuggestionClicked, this).onSync("cursorMoved", this._onCursorMoved, this).onSync("cursorRemoved", this._onCursorRemoved, this).onSync("opened", this._onOpened, this).onSync("closed", this._onClosed, this).onAsync("datasetRendered", this._onDatasetRendered, this).onAsync("datasetItemRendered", this._onDatasetItemRendered, this);
             this.input = new Input({
                 input: $input,
                 hint: $hint
@@ -1506,6 +1511,9 @@
             },
             _onDatasetRendered: function onDatasetRendered() {
                 this._updateHint();
+            },
+            _onDatasetSuggestionRendered: function onDatasetRendered(type, $el, suggestion) {
+                this.eventBus.trigger("suggestionRendered", $el, suggestion);
             },
             _onOpened: function onOpened() {
                 this._updateHint();

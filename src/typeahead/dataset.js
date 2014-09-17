@@ -116,6 +116,7 @@ var Dataset = (function() {
           .data(datumKey, suggestion);
 
           $el.children().each(function() { $(this).css(css.suggestionChild); });
+          that.trigger('suggestionRendered', $el, suggestion);
 
           return $el;
         }
