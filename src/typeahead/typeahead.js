@@ -113,7 +113,7 @@ var Typeahead = (function() {
       this._updateHint();
     },
 
-    _onDatasetSuggestionRendered: function onDatasetRendered(type, $el, suggestion) {
+    _onDatasetItemRendered: function onDatasetRendered(type, $el, suggestion) {
       this.eventBus.trigger('suggestionRendered', $el, suggestion);
     },
 

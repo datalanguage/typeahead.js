@@ -617,7 +617,7 @@
                         $el.children().each(function() {
                             $(this).css(css.suggestionChild);
                         });
-                        this.trigger("suggestionRendered", $el, suggestion);
+                        that.trigger("suggestionRendered", $el, suggestion);
                         return $el;
                     }
                 }
@@ -914,7 +914,7 @@
             _onDatasetRendered: function onDatasetRendered() {
                 this._updateHint();
             },
-            _onDatasetSuggestionRendered: function onDatasetRendered(type, $el, suggestion) {
+            _onDatasetItemRendered: function onDatasetRendered(type, $el, suggestion) {
                 this.eventBus.trigger("suggestionRendered", $el, suggestion);
             },
             _onOpened: function onOpened() {
