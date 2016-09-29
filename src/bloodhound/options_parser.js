@@ -101,7 +101,7 @@ var oParser = (function() {
 
     o.prepare = toRemotePrepare(o);
     o.limiter = toLimiter(o);
-    o.transport = o.transport ? callbackToDeferred(o.transport) : $.ajax;
+    o.transport = $.ajax;
 
     delete o.replace;
     delete o.wildcard;
